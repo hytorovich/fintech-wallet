@@ -1,15 +1,22 @@
 package com.fintech.wallet.model;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Account {
-    private long id;
-    private User owner;
-    private BigDecimal balance = BigDecimal.ZERO; // подсмотрел, не знал эку команду, а ноль из-за инт не принимался
+    private final long id;
+    private final User owner;
+    private BigDecimal balance = BigDecimal.ZERO;
+    private final List<Transaction> transactions = new ArrayList<>();
 
     public Account(long id, User owner) {
         this.id = id;
         this.owner = owner;
+    }
+
+    public List<Transaction> getTransactions() {
+        return List.copyOf(transactions);
     }
 
     public long getId() {
@@ -38,6 +45,7 @@ public class Account {
             return;
         }
         balance = balance.add(amount);
+        transactions.add(new Transaction(this.id, TransactionType.DEPOSIT, amount));
     }
 
     public boolean withdraw(BigDecimal amount) {
@@ -51,6 +59,7 @@ public class Account {
             return false;
         }
         balance = balance.subtract(amount);
+        transactions.add(new Transaction(this.id, TransactionType.WITHDRAWAL, amount));
         return true;
     }
 }

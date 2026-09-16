@@ -1,4 +1,6 @@
 package com.fintech.wallet.model;
 
-public class TransactionType {
+public enum TransactionType {
+    DEPOSIT,
+    WITHDRAWAL
 }
